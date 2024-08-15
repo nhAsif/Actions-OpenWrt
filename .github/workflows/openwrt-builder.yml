@@ -61,6 +61,8 @@ jobs:
         sudo ./configure --enable-optimizations
         sudo make altinstall
         sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python"
+        sudo ls /usr/bin/python* 
+        sudo python2 --version
 
     - name: Clone source code
       working-directory: /workdir
