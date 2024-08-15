@@ -40,6 +40,7 @@ jobs:
     - name: Send notification
       run: |
         curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/openwrt固件编译开始
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="openwrt固件编译开始"
 
     - name: Initialization environment
       env:
