@@ -153,12 +153,42 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: Upload telegram
+    - name: Set up firmware file paths
+      continue-on-error: true
       run: |
-        curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ secrets.TELEGRAM_ID }} -F caption="squashfs" -F document=@"${{ env.FIRMWARE }}/*-squashfs-sysupgrade.img.gz"
-        curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ secrets.TELEGRAM_ID }} -F caption="ext4" -F document=@"${{ env.FIRMWARE }}/*-ext4-sysupgrade.img.gz"
-        curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ secrets.TELEGRAM_ID }} -F caption="rootfs\n\nOpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！"  -F document=@"${{ env.FIRMWARE }}/*-rootfs.tar.gz"
+        echo "SQUASHFS_FILE=$(find ${{ env.FIRMWARE }} -name '*-squashfs-sysupgrade.img.gz')" >> $GITHUB_ENV
+        echo "EXT4_FILE=$(find ${{ env.FIRMWARE }} -name '*-ext4-sysupgrade.img.gz')" >> $GITHUB_ENV
+        echo "ROOTFS_FILE=$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz')" >> $GITHUB_ENV
 
+    - name: Upload squashfs to Telegram
+      uses: appleboy/telegram-action@master
+      continue-on-error: true
+      with:
+        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
+        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
+        document: "${{ env.SQUASHFS_FILE }}"
+        caption: "squashfs"
+
+    - name: Upload ext4 to Telegram
+      uses: appleboy/telegram-action@master
+      continue-on-error: true
+      with:
+        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
+        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
+        document: "${{ env.EXT4_FILE }}"
+        caption: "ext4"
+
+    - name: Upload rootfs to Telegram
+      uses: appleboy/telegram-action@master
+      continue-on-error: true
+      with:
+        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
+        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
+        document: "${{ env.ROOTFS_FILE }}"
+        caption: |
+          rootfs
+          OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！
+          
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
@@ -175,5 +205,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Send notification
+      continue-on-error: true
       run: |
         curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}编译结束
