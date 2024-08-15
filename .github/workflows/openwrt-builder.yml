@@ -152,6 +152,12 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
+    - name: Upload telegram
+      run: |
+        curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ env.TELEGRAM_ID }} -F caption="squashfs" -F document=@"${{ env.FIRMWARE }}/*-squashfs-sysupgrade.img.gz"
+        curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ env.TELEGRAM_ID }} -F caption="ext4" -F document=@"${{ env.FIRMWARE }}/*-ext4-sysupgrade.img.gz"
+        curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendDocument -F chat_id=${{ env.TELEGRAM_ID }} -F caption="rootfs\n\nOpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！"  -F document=@"${{ env.FIRMWARE }}/*-rootfs.tar.gz"
+
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
@@ -169,4 +175,4 @@ jobs:
 
     - name: Send notification
       run: |
-        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/${{ env.DEVICE_NAME }}openwrt固件编译结束
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}编译结束
