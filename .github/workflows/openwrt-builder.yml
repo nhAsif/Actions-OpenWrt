@@ -153,41 +153,20 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: Set up firmware file paths
+    - name: Upload squashfs to Telegram
       continue-on-error: true
       run: |
-        echo "SQUASHFS_FILE=$(find ${{ env.FIRMWARE }} -name '*-squashfs-sysupgrade.img.gz')" >> $GITHUB_ENV
-        echo "EXT4_FILE=$(find ${{ env.FIRMWARE }} -name '*-ext4-sysupgrade.img.gz')" >> $GITHUB_ENV
-        echo "ROOTFS_FILE=$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz')" >> $GITHUB_ENV
-
-    - name: Upload squashfs to Telegram
-      uses: appleboy/telegram-action@master
-      continue-on-error: true
-      with:
-        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
-        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
-        document: "${{ env.SQUASHFS_FILE }}"
-        caption: "squashfs"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-squashfs-sysupgrade.img.gz') -F caption="squashfs"
 
     - name: Upload ext4 to Telegram
-      uses: appleboy/telegram-action@master
       continue-on-error: true
-      with:
-        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
-        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
-        document: "${{ env.EXT4_FILE }}"
-        caption: "ext4"
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-ext4-sysupgrade.img.gz') -F caption="ext4"
 
     - name: Upload rootfs to Telegram
-      uses: appleboy/telegram-action@master
       continue-on-error: true
-      with:
-        tg_token: ${{ secrets.TELEGRAM_TOKEN }}
-        tg_chat_id: ${{ secrets.TELEGRAM_ID }}
-        document: "${{ env.ROOTFS_FILE }}"
-        caption: |
-          rootfs
-          OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz') -F caption="rootfs\nOpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！"
           
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
