@@ -56,7 +56,7 @@ jobs:
 
     - name: Link python2
       run: |
-        sudo ln -sf "/usr/bin/python2.7" "/usr/bin/python2"
+        sudo ln -sf python2.7 "/usr/bin/python2"
 
     - name: Clone source code
       working-directory: /workdir
