@@ -55,9 +55,8 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
 
     - name: Link python2
-      working-directory: /workdir
       run: |
-        sudo ln -s "/usr/bin/python2.7" "/usr/bin/python2"
+        sudo ln -sf "/usr/bin/python2.7" "/usr/bin/python2"
 
     - name: Clone source code
       working-directory: /workdir
