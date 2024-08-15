@@ -38,7 +38,7 @@ jobs:
 
     - name: Send notification
       run: |
-        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/${{ env.DEVICE_NAME }}openwrt固件编译开始
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/openwrt固件编译开始
 
     - name: Initialization environment
       env:
@@ -54,13 +54,10 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
-    - name: ln python2
+    - name: Link python2
       working-directory: /workdir
       run: |
-        sudo ls /usr/bin/python*
         sudo ln -s "/usr/bin/python2.7" "/usr/bin/python2"
-        sudo ls /usr/bin/python* 
-        sudo python2 --version
 
     - name: Clone source code
       working-directory: /workdir
