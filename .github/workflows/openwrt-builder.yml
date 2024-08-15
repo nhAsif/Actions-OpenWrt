@@ -167,7 +167,7 @@ jobs:
     - name: Upload rootfs to Telegram
       continue-on-error: true
       run: |
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz') -F caption="rootfs\nOpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz') -F caption=$'rootfs\nOpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！'
           
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
