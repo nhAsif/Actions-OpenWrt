@@ -50,6 +50,18 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
 
+    - name: Build python2
+      working-directory: /workdir
+      run: |
+        sudo ls /usr/bin/python* 
+        sudo python2 --version
+        wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+        tar xzf Python-2.7.18.tgz
+        cd Python-2.7.18
+        sudo ./configure --enable-optimizations
+        sudo make altinstall
+        sudo ln -s "/usr/local/bin/python2.7" "/usr/bin/python"
+
     - name: Clone source code
       working-directory: /workdir
       run: |
