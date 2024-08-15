@@ -36,6 +36,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: Send notification
+      run: |
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/${{ env.DEVICE_NAME }}openwrt固件编译开始
+
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -172,3 +176,7 @@ jobs:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Send notification
+      run: |
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/${{ env.DEVICE_NAME }}openwrt固件编译结束
