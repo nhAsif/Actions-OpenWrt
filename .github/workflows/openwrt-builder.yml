@@ -14,7 +14,7 @@ name: OpenWrt Builder
 
 on:
   repository_dispatch:
-    types: build
+    types: build_e20c_openwrt
   workflow_dispatch:
 
 env:
