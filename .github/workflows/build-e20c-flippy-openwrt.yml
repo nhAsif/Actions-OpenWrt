@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt E20C Builder
+name: OpenWrt E20C flippy Builder
 
 on:
   repository_dispatch:
