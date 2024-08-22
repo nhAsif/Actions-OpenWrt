@@ -10,18 +10,18 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt E20C flippy Builder
+name: OpenWrt E20C flippy-lede Builder
 
 on:
   repository_dispatch:
-    types: build_e20c_flippy_openwrt
+    types: build_e20c_flippy_openwrt_lede
   workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: e20c_flippy.config
+  CONFIG_FILE: e20c_flippy_lede.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   DIY_P3_SH: diy-part3-lede.sh
@@ -40,8 +40,8 @@ jobs:
 
     - name: Send notification
       run: |
-        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-flippy-openwrt固件编译开始！
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt固件编译开始！"
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-flippy-openwrt-lede固件编译开始！
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt-lede固件编译开始！"
 
     - name: Initialization environment
       env:
@@ -184,5 +184,5 @@ jobs:
     - name: Send notification
       continue-on-error: true
       run: |
-        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}-flippy编译结束！
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt固件编译结束！"
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}-flippy-lede编译结束！
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt-lede固件编译结束！"
