@@ -143,6 +143,7 @@ jobs:
       uses: unifreq/openwrt_packit@master
       env:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*rootfs.tar.gz
+        KERNEL_REPO_URL: ophub/kernel
         PACKAGE_SOC: e20c
         WHOAMI: doyo
 
