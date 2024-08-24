@@ -17,7 +17,8 @@
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/ddns-go
-git clone https://github.com/chenmozhijin/luci-app-socat.git package/socat
+git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
+git clone https://github.com/chenmozhijin/luci-app-socat.git package/luci-app-socat
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 git clone https://github.com/jerrykuku/luci-app-argon-config.git package/luci-app-argon-config
+git clone https://github.com/sirpdboy/luci-app-netdata package/luci-app-netdata
