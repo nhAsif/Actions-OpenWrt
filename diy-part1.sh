@@ -19,6 +19,16 @@
 
 git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 git clone https://github.com/chenmozhijin/luci-app-socat.git package/luci-app-socat
+
+# theme
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 git clone https://github.com/jerrykuku/luci-app-argon-config.git package/luci-app-argon-config
-git clone https://github.com/sirpdboy/luci-app-netdata package/luci-app-netdata
+
+# netdata
+git clone https://github.com/muink/openwrt-netdata-ssl.git package/openwrt-netdata-ssl
+git clone --depth 1 --branch master --single-branch --no-checkout https://github.com/muink/luci-app-netdata.git package/luci-app-netdata
+pushd package/luci-app-netdata
+umask 022
+git checkout
+popd
+
