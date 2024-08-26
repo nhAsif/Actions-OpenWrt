@@ -10,21 +10,20 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt E20C flippy-lede Builder
+name: OpenWrt E20C Builder
 
 on:
   repository_dispatch:
-    types: build_e20c_flippy_openwrt_lede
+    types: build_e20c_openwrt
   workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.lede.conf.default
-  CONFIG_FILE: e20c_flippy_lede.config
+  CONFIG_FILE: e20c_lede.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  DIY_P3_SH: diy-part3-lede.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -40,7 +39,8 @@ jobs:
 
     - name: Send notification
       run: |
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt-lede固件编译开始！"
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-openwrt固件编译开始！
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt固件编译开始！"
 
     - name: Initialization environment
       env:
@@ -73,7 +73,6 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
-        git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogic
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -86,10 +85,8 @@ jobs:
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
-        chmod +x $DIY_P3_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        $GITHUB_WORKSPACE/$DIY_P3_SH
 
     - name: Download package
       id: package
@@ -138,15 +135,6 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Package OpenWrt Firmware
-      continue-on-error: true
-      uses: unifreq/openwrt_packit@master
-      env:
-        OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*rootfs.tar.gz
-        KERNEL_REPO_URL: ophub/kernel
-        PACKAGE_SOC: e20c
-        WHOAMI: doyo
-
     - name: Generate release tag
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
@@ -161,9 +149,24 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
-        body: OpenWrt E20C flippy lede
-        files: ${{ env.PACKAGED_OUTPUTPATH  }}/*
+        body: OpenWrt E20C lede
+        files: ${{ env.FIRMWARE }}/*
 
+    - name: Upload squashfs to Telegram
+      continue-on-error: true
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-squashfs-sysupgrade.img.gz') -F caption="e20c-squashfs"
+
+    - name: Upload ext4 to Telegram
+      continue-on-error: true
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-ext4-sysupgrade.img.gz') -F caption="e20c-ext4"
+
+    - name: Upload rootfs to Telegram
+      continue-on-error: true
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendDocument" -F chat_id=${{ secrets.TELEGRAM_ID }} -F document=@$(find ${{ env.FIRMWARE }} -name '*-rootfs.tar.gz') -F caption=$'e20c-rootfs\n'"OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }} 编译结束！"
+          
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
@@ -182,4 +185,5 @@ jobs:
     - name: Send notification
       continue-on-error: true
       run: |
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-flippy-openwrt-lede固件编译结束！"
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}编译结束！
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt固件编译结束！"
