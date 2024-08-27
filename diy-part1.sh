@@ -18,7 +18,7 @@
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
 git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
-git clone https://github.com/chenmozhijin/luci-app-socat.git package/luci-app-socat
+# git clone https://github.com/chenmozhijin/luci-app-socat.git package/luci-app-socat
 
 # theme
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
@@ -32,3 +32,6 @@ umask 022
 git checkout
 popd
 
+git clone https://github.com/sbwml/openwrt_pkgs.git sbwml_pkg
+# cp -r sbwml_pkg/luci-app-netdata package/luci-app-netdata
+cp -r sbwml_pkg/luci-app-socat package/luci-app-socat
