@@ -160,6 +160,7 @@ jobs:
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
+        cp ${{ env.FIRMWARE }}/*sdk* ${{ env.PACKAGED_OUTPUTPATH  }}/
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@master
