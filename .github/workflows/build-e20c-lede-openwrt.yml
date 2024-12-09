@@ -83,6 +83,7 @@ jobs:
           echo "发现补丁文件..."
           mv *.patch openwrt
           cd openwrt
+          cat *.patch
           git apply *.patch
         else
           echo "没有发现补丁文件"
