@@ -77,6 +77,17 @@ jobs:
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
+    - name: Patch
+      run: |
+        if ls *.patch &>/dev/null; then
+          echo "发现补丁文件..."
+          mv *.patch openwrt
+          cd openwrt
+          git apply *.patch
+        else
+          echo "没有发现补丁文件"
+        fi
+
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
