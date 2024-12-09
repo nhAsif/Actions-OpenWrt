@@ -83,9 +83,9 @@ jobs:
           echo "发现补丁文件..."
           mv *.patch openwrt
           cd openwrt
-          ls
-          cat *.patch
-          git apply *.patch
+          for patch in *.patch; do
+            patch -p1 < "$patch"
+          done
         else
           echo "没有发现补丁文件"
         fi
