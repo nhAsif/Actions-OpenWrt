@@ -10,11 +10,11 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt E20C Builder
+name: OpenWrt E20C LEDE Builder
 
 on:
   repository_dispatch:
-    types: build_e20c_openwrt
+    types: build_e20c_lede_openwrt
   workflow_dispatch:
 
 env:
