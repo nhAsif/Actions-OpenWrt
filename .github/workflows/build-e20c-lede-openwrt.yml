@@ -40,7 +40,7 @@ jobs:
     - name: Send notification
       run: |
         curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-openwrt固件编译开始！
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt固件编译开始！"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt-lede 固件编译开始！"
 
     - name: Initialization environment
       env:
@@ -67,12 +67,12 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Load custom feeds
-      run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+    # - name: Load custom feeds
+    #   run: |
+    #     # [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+    #     chmod +x $DIY_P1_SH
+    #     cd openwrt
+    #     $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
@@ -186,4 +186,4 @@ jobs:
       continue-on-error: true
       run: |
         curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/OpenWrt_firmware${{ env.DEVICE_NAME }}编译结束！
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt固件编译结束！"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt-lede 固件编译结束！"
