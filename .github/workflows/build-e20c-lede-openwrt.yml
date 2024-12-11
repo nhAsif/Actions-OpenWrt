@@ -79,9 +79,9 @@ jobs:
 
     - name: Patch
       run: |
-        if ls *.patch &>/dev/null; then
+        if ls patchs/*.patch &>/dev/null; then
           echo "发现补丁文件..."
-          mv *.patch openwrt
+          mv patchs/*.patch openwrt
           cd openwrt
           for patch in *.patch; do
             patch -p1 < "$patch"
