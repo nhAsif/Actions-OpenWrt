@@ -163,7 +163,7 @@ jobs:
         cp ${{ env.FIRMWARE }}/*sdk* ${{ env.PACKAGED_OUTPUTPATH  }}/
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@master
+      uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
