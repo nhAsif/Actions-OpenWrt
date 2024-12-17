@@ -39,8 +39,8 @@ jobs:
 
     - name: Send notification
       run: |
-        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-openwrt固件编译开始！
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt-lede 固件编译开始！"
+        curl https://api.day.app/${{ secrets.BARK_KEY }}/Actions-OpenWrt/e20c-openwrt固件编译开始！ > /dev/null 2>&1
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="e20c-openwrt-lede 固件编译开始！" > /dev/null 2>&1
 
     - name: Initialization environment
       env:
