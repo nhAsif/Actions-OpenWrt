@@ -39,7 +39,7 @@ jobs:
 
     - name: Send notification
       run: |
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="x86-openwrt-official 固件编译开始！"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="x86-openwrt-official 固件编译开始！" > /dev/null 2>&1
 
     - name: Initialization environment
       env:
@@ -179,4 +179,4 @@ jobs:
     - name: Send notification
       continue-on-error: true
       run: |
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="x86-openwrt-official固件编译结束！"
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" -F chat_id=${{ secrets.TELEGRAM_ID }} -F text="x86-openwrt-official固件编译结束！" > /dev/null 2>&1
