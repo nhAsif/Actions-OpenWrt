@@ -11,13 +11,18 @@
 #
 
 # Modify default IP
-# sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/luci2/bin/config_generate
 
 # ash -> bash
-# sed -i 's|/bin/ash|/bin/bash|' package/base-files/files/etc/passwd
+sed -i 's#/bin/ash#/bin/bash#' package/base-files/files/etc/passwd
 
 # Modify default theme
 #sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 
 # Modify hostname
-#sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
+sed -i 's/LEDE/OpenWrt/g' package/base-files/files/bin/config_generate
+sed -i 's/LEDE/OpenWrt/g' package/base-files/luci2/bin/config_generate
+
+# 修改 tailscale 菜单位置
+sed -i 's#admin/services#admin/vpn#g' feeds/luci/applications/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json
