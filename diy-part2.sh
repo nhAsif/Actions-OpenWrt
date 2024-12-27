@@ -29,7 +29,3 @@ sed -i 's#admin/services#admin/vpn#g' feeds/luci/applications/luci-app-tailscale
 
 # cloudflared 启动脚本增加 --protocol http2 参数，使国内连接更稳定
 sed -i '/procd_append_param command "--no-autoupdate"/a \\tprocd_append_param command "--protocol" "http2"' feeds/packages/net/cloudflared/files/cloudflared.init
-
-# 快速 node 
-rm -rf feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 feeds/packages/lang/node
