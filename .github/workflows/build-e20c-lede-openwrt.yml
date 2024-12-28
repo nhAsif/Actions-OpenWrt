@@ -91,6 +91,12 @@ jobs:
           echo "没有发现补丁文件"
         fi
 
+    - name: Load custom configuration
+      run: |
+        chmod +x $DIY_P3_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P3_SH
+
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
@@ -102,7 +108,6 @@ jobs:
         chmod +x $DIY_P3_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        $GITHUB_WORKSPACE/$DIY_P3_SH
 
     - name: Download package
       id: package
