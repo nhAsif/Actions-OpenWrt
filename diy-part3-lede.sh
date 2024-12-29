@@ -17,4 +17,4 @@ cp -r istoreos/package/libs/openssl/ package/libs/openssl/
 
 # 下载 adguardhome 预编译文件
 rm -rf feeds/packages/net/adguardhome/*
-cp -r ../packages/AdGuardHome/Makefile feeds/packages/net/adguardhome/
+cp -r custom_packages/AdGuardHome/Makefile feeds/packages/net/adguardhome/
