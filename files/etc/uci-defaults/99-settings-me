@@ -6,9 +6,9 @@
 #
 # root_password=""
 #
-lan_ip_address="192.168.2.33"
-lan_ip_gateway="192.168.2.1"
-lan_ip_dns="192.168.2.1"
+lan_ip_address="192.168.2.1"
+# lan_ip_gateway="192.168.2.1"
+# lan_ip_dns="192.168.2.1"
 #
 # pppoe_username=""
 # pppoe_password=""
