@@ -35,20 +35,7 @@ rm -rf feeds/packages/lang/node
 git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-23.05 feeds/packages/lang/node
 
 # 下载 AdGuardHome core
-case $CONFIG_ARCH in
-x86_64)
-    ARCH_TAG="amd64"
-    ;;
-aarch64)
-    ARCH_TAG="arm64"
-    ;;
-*)
-    echo "不支持的架构: $ARCH"
-    exit 1
-    ;;
-esac
-
 mkdir -p files/usr/bin/AdGuardHome || true
-AGH_CORE=$(curl -sL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep /AdGuardHome_linux_${ARCH_TAG} | awk -F '"' '{print $4}') || true
+AGH_CORE=$(curl -sL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep /AdGuardHome_linux_${ARCH} | awk -F '"' '{print $4}') || true
 wget -qO- $AGH_CORE | tar xOvz > files/usr/bin/AdGuardHome/AdGuardHome || true
 chmod +x files/usr/bin/AdGuardHome/AdGuardHome || true
