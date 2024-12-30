@@ -4,8 +4,11 @@
 # wlan_name="ImmortalWrt"
 # wlan_password="12345678"
 #
-root_password=""
+# root_password=""
+#
 lan_ip_address="192.168.2.33"
+lan_ip_gateway="192.168.2.1"
+lan_ip_dns="192.168.2.1"
 #
 # pppoe_username=""
 # pppoe_password=""
@@ -13,14 +16,27 @@ lan_ip_address="192.168.2.33"
 # log potential errors
 exec >/tmp/setup.log 2>&1
 
-if [ -n "$root_password" ]; then
-  (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
-fi
+# if [ -n "$root_password" ]; then
+#   (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
+# fi
+
+# 设置密码为空
+(echo ""; sleep 1; echo "") | passwd > /dev/null
 
 # Configure LAN
 # More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
 if [ -n "$lan_ip_address" ]; then
   uci set network.lan.ipaddr="$lan_ip_address"
+  uci commit network
+fi
+
+if [ -n "$lan_ip_gateway" ]; then
+  uci set network.lan.gateway="$lan_ip_gateway"
+  uci commit network
+fi
+
+if [ -n "$lan_ip_dns" ]; then
+  uci set network.lan.dns="$lan_ip_dns"
   uci commit network
 fi
 
